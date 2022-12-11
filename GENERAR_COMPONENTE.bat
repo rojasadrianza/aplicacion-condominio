@@ -1,0 +1,2 @@
+REM COMANDO ng g c "NOMBRE DEL COMPONENTE A CREAR"
+ng g c card
