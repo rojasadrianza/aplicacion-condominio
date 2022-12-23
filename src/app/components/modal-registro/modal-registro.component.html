@@ -1,7 +1,7 @@
 
 <ng-template #contenido let-modal>
     <div class="modal-header">
-        <h4 class="modal-title">Acceder al Sistema:</h4>
+        <h4 class="modal-title">Registrarse:</h4>
         <button class="close" aria-label="close" type="button" (click)="modal.dismiss()">
 
             <span aria-hidden="true">&times;</span>
@@ -9,16 +9,14 @@
     </div>
     <div class="modal-body">
        
-        <app-formulario></app-formulario>
+        <app-registro></app-registro>
 
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-success" (click)="modal.close()">ok</button>
-       
+        <!--<button type="button" class="btn btn-success" (click)="modal.close()">ok</button>-->
+        <!--<a href="/registro" class="btn btn-primary" tabindex="-1" role="button" aria-disabled="true">Registrarse</a>-->
        <!--<a href="#" class="btn btn-secondary disabled" tabindex="-1" role="button" aria-disabled="true">Link</a>-->
     </div>
 </ng-template>
 
-<button type="button" class="btn btn-info me-5" (click)="modal.open(contenido)">Ingresar</button>
-
-
+<button type="button" class="btn btn-danger" (click)="modalRegistro.open(contenido)">Registrarse</button>
