@@ -9,6 +9,9 @@ import { RegistroService } from '@services/registro.service';
 })
 export class ModalRegistroComponent implements OnInit {
 
+  //resultado:String;
+  resultado='';
+
   constructor(public modalRegistro:NgbModal, private _api: RegistroService) { }
 
   ngOnInit(): void {
@@ -19,7 +22,14 @@ export class ModalRegistroComponent implements OnInit {
   registroUsuario(parametro:any){
     console.log(parametro); 
     this._api.saveUsuario(parametro).subscribe(result=>
-    {console.log(result) })  
+    {/*console.log('RESULTADO ' + result)
+     console.log('ID ' + result.usuarioGuardado._id)*/
+     this.resultado =  result.usuarioGuardado._id;
+    })      
+  }
+
+  cerrar(){
+    this.resultado =''
   }
   
 

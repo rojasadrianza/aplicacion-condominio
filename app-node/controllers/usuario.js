@@ -41,7 +41,7 @@ usuario.save((err, usuarioStored) => {
           if (err){
               res.status(500).send({message: 'Error al guardar el marcador'});
           }else{
-              res.status(200).send({usuario: usuarioStored});
+              res.status(200).send({usuarioGuardado: usuarioStored});
           }
 });
 

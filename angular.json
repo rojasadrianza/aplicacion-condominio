@@ -30,6 +30,9 @@
               "node_modules/bootstrap/dist/js/bootstrap.bundle.js"
             ]
           },
+
+
+
           "configurations": {
             "production": {
               "budgets": [
@@ -51,7 +54,7 @@
                 }
               ],
               "outputHashing": "all"
-            },
+            },            
             "development": {
               "buildOptimizer": false,
               "optimization": false,
@@ -59,8 +62,20 @@
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true
+            },
+            "dev":{
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.dev.ts"
+                }
+              ]
             }
           },
+
+
+
+
           "defaultConfiguration": "production"
         },
         "serve": {
@@ -68,6 +83,9 @@
           "configurations": {
             "production": {
               "browserTarget": "app-condominio:build:production"
+            },
+            "dev": {
+              "browserTarget": "app-condominio:build:dev"
             },
             "development": {
               "browserTarget": "app-condominio:build:development"

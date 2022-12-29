@@ -1,15 +1,15 @@
 <div class="row">
 
     <!--<form (ngSubmit)="enviarToken()" novalidate>-->
-    <form (ngSubmit)="enviarUsuario()" class="was-validated">
+    <form (ngSubmit)="enviarUsuario()" class="was-validated needs-validation" novalidate>
 
-      <div class="mb-3">
+      <div class="mb-3 position-relative">
         <label for="validationInputEmail" class="form-label">Email address</label>
         <input type="email" class="form-control" name="validationInputEmail" [(ngModel)]="correoIngresado"   required>
-        <div class="valid-feedback">
+        <div class="valid-tooltip">
           Todo Bien!
         </div>
-        <div class="invalid-feedback">
+        <div class="invalid-tooltip">
           Por favor ingrese correctamente el correo eléctronico!
         </div>
       </div>
