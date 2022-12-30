@@ -1,42 +1,35 @@
-<div class="row">
+<div class="row">    
+    
+      <form [formGroup]="registerForm" (ngSubmit)="enviarUsuario() "  class="" >       
 
-    <!--<form (ngSubmit)="enviarToken()" novalidate>-->
-    <form (ngSubmit)="enviarUsuario()" class="was-validated needs-validation" novalidate>
-
-      <div class="mb-3 position-relative">
+      <div  class="mb-3 position-relative">
         <label for="validationInputEmail" class="form-label">Email address</label>
-        <input type="email" class="form-control" name="validationInputEmail" [(ngModel)]="correoIngresado"   required>
-        <div class="valid-tooltip">
-          Todo Bien!
+        <input type="email" class="form-control" name="validationInputEmail" [(ngModel)]="correoIngresado"   formControlName="email" autocomplete="off">
+        <div class="errors-container" *ngIf="emailControl.invalid && (emailControl.touched || emailControl.dirty)" >
+          <p class="error-msg" *ngIf="emailControl.hasError('required')">El campo es obligatorio</p>
+          <p class="error-msg" *ngIf="emailControl.hasError('email')">El campo debe ser un email valido</p>
         </div>
-        <div class="invalid-tooltip">
-          Por favor ingrese correctamente el correo eléctronico!
-        </div>
+        
       </div>
 
       <div class="mb-3">
         <label for="validationInputPassword" class="form-label">Password</label>
-        <input type="password" class="form-control" name="validationInputPassword" [(ngModel)]="passwordIngresado" required>
-        <div class="valid-feedback">
-          Todo Bien!
-        </div>
-        <div class="invalid-feedback">
-          Por favor ingrese correctamente el password!
+        <input type="password" class="form-control" name="validationInputPassword" [(ngModel)]="passwordIngresado" formControlName="password" maxlength="15">
+        <div class="errors-container" *ngIf="passwordControl.invalid && (passwordControl.touched || passwordControl.dirty)" >
+          <p class="error-msg" *ngIf="passwordControl.hasError('required')">El campo es obligatorio</p>  
+          <p class="error-msg" *ngIf="passwordControl.hasError('pattern')">El valor debe tener de 6 a 15 de largo, numeros y letras</p>        
         </div>
       </div>
 
       <div class="mb-3">
         <label for="validationInputPasswordConfirmacion" class="form-label">Confirmacion Password</label>
-        <input type="password" class="form-control" name="validationInputPasswordConfirmacion" [(ngModel)]="passwordIngresadoConfirmacion" required>
-        <div class="valid-feedback">
-          Todo Bien!
-        </div>
-        <div class="invalid-feedback">
-          Por favor ingrese correctamente ña confirmacion del password!
+        <input type="password" class="form-control" name="validationInputPasswordConfirmacion" [(ngModel)]="passwordIngresadoConfirmacion" formControlName="passwordConfirm" maxlength="15">
+        <div class="errors-container"  >
+          <p class="error-msg" *ngIf="registerForm.hasError('passwordsMustBeEqual')">El password es diferente</p>                  
         </div>
       </div>
 
-      <div class="mb-3">
+       <!--<div class="mb-3">
         <label for="validationInputNombre" class="form-label">Nombre</label>
         <input type="text" class="form-control" name="validationInputNombre" [(ngModel)]="nombreIngresado" required>
         <div class="valid-feedback">
@@ -81,20 +74,24 @@
         <div class="invalid-feedback">
           Por favor seleccione un número de apartamento!
         </div>
-      </div>
+      </div>-->
 
 
       
 
       <div class="col-12">
-        <button class="btn btn-primary" type="submit">Submit form</button>
+        <button [disabled]="registerForm.invalid" class="btn btn-primary" type="submit">Submit form</button>
       </div>
 
 
-      
+      <pre>{{ registerForm.value | json }}</pre>
        
     </form>
 
+  
 
+
+    
+    
 </div>
 
