@@ -5,6 +5,53 @@ var Usuario = require('../models/usuario');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
+function getUsuarioValida(req, res){      
+ 
+  //validaToken(req, res);
+
+  //const {email} = req.body;
+  var email = req.params.email;
+  const query = { correo: email };
+
+  Usuario.findOne(query).exec((err, usuarios) => { 
+    if (err){
+      res.status(500).send({message: 'Error al devolver el marcador'});
+    }else{
+          if (!usuarios){
+              res.status(404).send({message: 'No hay Usuario'});
+          }else{
+              res.status(200).send({message: 'Usuario existe'});  
+          }        
+    }
+});
+
+}
+
+function getApartamentoValida(req, res){      
+ 
+ 
+  
+  var piso = req.params.piso;
+  var apartamento = req.params.apartamento;
+
+  const query = { apartamento: apartamento, piso:piso };
+
+  Usuario.findOne(query).exec((err, usuarios) => { 
+    if (err){
+      res.status(500).send({message: 'Error al devolver el marcador'});
+    }else{
+          if (!usuarios){
+              res.status(404).send({message: 'Apartamento no registrado'});
+          }else{
+              res.status(200).send({message: 'Apartamento registrado'});  
+          }        
+    }
+});
+
+}
+
+
+
 function getUsuario(req, res){      
  
      validaToken(req, res);
@@ -171,5 +218,7 @@ module.exports = {
 	saveUsuario,
 	updateUsuario,
 	deleteUsuario,
-  authUsuario
+  authUsuario,
+  getUsuarioValida,
+  getApartamentoValida
 };

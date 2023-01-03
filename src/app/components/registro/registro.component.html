@@ -1,13 +1,20 @@
 <div class="row">    
     
-      <form [formGroup]="registerForm" (ngSubmit)="enviarUsuario() "  class="" >       
+      <!--<form [formGroup]="registerForm" (ngSubmit)="enviarUsuario() "  class="" >  -->  
+        <form [formGroup]="registerForm" (ngSubmit)="buscarEmail()"  class="" >   
+        
 
       <div  class="mb-3 position-relative">
         <label for="validationInputEmail" class="form-label">Email address</label>
-        <input type="email" class="form-control" name="validationInputEmail" [(ngModel)]="correoIngresado"   formControlName="email" autocomplete="off">
+        
+        <!--<input type="email" class="form-control" name="validationInputEmail" [(ngModel)]="correoIngresado"   formControlName="email" [formControl]="email" autocomplete="off">-->
+        <input type="email" class="form-control" name="validationInputEmail" [(ngModel)]="correoIngresado"   formControlName="email"  autocomplete="off">
         <div class="errors-container" *ngIf="emailControl.invalid && (emailControl.touched || emailControl.dirty)" >
           <p class="error-msg" *ngIf="emailControl.hasError('required')">El campo es obligatorio</p>
           <p class="error-msg" *ngIf="emailControl.hasError('email')">El campo debe ser un email valido</p>
+        </div>
+        <div>
+          <p class="text-danger" *ngIf="existe" > La dirección de correo ingresada ya se encuentra registrada</p>
         </div>
         
       </div>
@@ -16,67 +23,59 @@
         <label for="validationInputPassword" class="form-label">Password</label>
         <input type="password" class="form-control" name="validationInputPassword" [(ngModel)]="passwordIngresado" formControlName="password" maxlength="15">
         <div class="errors-container" *ngIf="passwordControl.invalid && (passwordControl.touched || passwordControl.dirty)" >
-          <p class="error-msg" *ngIf="passwordControl.hasError('required')">El campo es obligatorio</p>  
-          <p class="error-msg" *ngIf="passwordControl.hasError('pattern')">El valor debe tener de 6 a 15 de largo, numeros y letras</p>        
+          <p class="text-danger" *ngIf="passwordControl.hasError('required')">El campo es obligatorio</p>  
+          <p class="text-danger" *ngIf="passwordControl.hasError('pattern')">El valor debe tener de 6 a 15 de largo, numeros y letras</p>        
         </div>
       </div>
 
       <div class="mb-3">
         <label for="validationInputPasswordConfirmacion" class="form-label">Confirmacion Password</label>
-        <input type="password" class="form-control" name="validationInputPasswordConfirmacion" [(ngModel)]="passwordIngresadoConfirmacion" formControlName="passwordConfirm" maxlength="15">
-        <div class="errors-container"  >
-          <p class="error-msg" *ngIf="registerForm.hasError('passwordsMustBeEqual')">El password es diferente</p>                  
+        <input type="password" class="form-control" name="validationInputPasswordConfirmacion" [(ngModel)]="passwordIngresadoConfirmacion" formControlName="passwordConfirm" maxlength="15">        
+          <div class="errors-container" *ngIf="passwordConfirmControl.invalid && (passwordConfirmControl.touched || passwordConfirmControl.dirty)"   >                   
+          <p class="text-danger" *ngIf="registerForm.hasError('passwordsMustBeEqual')">El password es diferente</p>                  
         </div>
       </div>
 
-       <!--<div class="mb-3">
+       <div class="mb-3">
         <label for="validationInputNombre" class="form-label">Nombre</label>
-        <input type="text" class="form-control" name="validationInputNombre" [(ngModel)]="nombreIngresado" required>
-        <div class="valid-feedback">
-          Todo Bien!
+        <input type="text" class="form-control" name="validationInputNombre" [(ngModel)]="nombreIngresado" formControlName="nombreIngresado" maxlength="10">
+        <div class="errors-container" *ngIf="nombreIngresadoControl.invalid && (nombreIngresadoControl.touched || nombreIngresadoControl.dirty)"   >                
+          <p class="text-danger" *ngIf="nombreIngresadoControl.hasError('required')">El campo es obligatorio</p>              
+          <p class="text-danger" *ngIf="nombreIngresadoControl.hasError('minLength')">El campo debe tener minimo 5 caracteres</p>     
         </div>
-        <div class="invalid-feedback">
-          Por favor ingrese correctamente el nombre!
-        </div>
+        
       </div>
 
       <div class="mb-3">
         <label for="validationSelectPiso" class="form-label">Piso</label>
-        <select class="form-select" name="validationSelectPiso" [(ngModel)]="pisoIngresado" required>
+        <select class="form-select" name="validationSelectPiso" [(ngModel)]="pisoIngresado" formControlName="pisoIngresado">
           <option value="" selected>Seleccione uno</option>
           <option value="0">PB</option>
           <option value="1">Uno</option>
           <option value="2">Dos</option>
           <option value="3">Tres</option>
         </select>
-
-        <div class="valid-feedback">
-          Todo Bien!
-        </div>
-        <div class="invalid-feedback">
-          Por favor seleccione un piso!
+        <div class="errors-container" *ngIf="pisoIngresadoControl.invalid && (pisoIngresadoControl.touched || pisoIngresadoControl.dirty)"   >                
+          <p class="text-danger" *ngIf="pisoIngresadoControl.hasError('required')">El campo es obligatorio</p> 
         </div>
       </div>
 
       <div class="mb-3">
         <label for="validationSelectApartamento" class="form-label">Apartamento</label>
-        <select class="form-select" name="validationSelectApartamento" [(ngModel)]="apartamentoIngresado" required>
+        <select class="form-select" name="validationSelectApartamento" [(ngModel)]="apartamentoIngresado" formControlName="apartamentoIngresado">
           <option value="" selected>Seleccione uno</option>
           <option value="01">01</option>
           <option value="02">02</option>
           <option value="03">03</option>
           <option value="04">04</option>
         </select>
-
-        <div class="valid-feedback">
-          Todo Bien!
+        <div class="errors-container" *ngIf="apartamentoIngresadoControl.invalid && (apartamentoIngresadoControl.touched || apartamentoIngresadoControl.dirty)"   >                
+          <p class="text-danger" *ngIf="apartamentoIngresadoControl.hasError('required')">El campo es obligatorio</p> 
         </div>
-        <div class="invalid-feedback">
-          Por favor seleccione un número de apartamento!
+        <div>
+          <p class="text-danger" *ngIf="existeApart" > El apartamento indicado ya se encuentra registrado</p>
         </div>
-      </div>-->
-
-
+      </div>
       
 
       <div class="col-12">

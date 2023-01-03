@@ -11,5 +11,7 @@ api.post('/usuario/', UsuarioController.saveUsuario);
 api.put('/usuario/:id', UsuarioController.updateUsuario);
 api.delete('/usuario/:id', UsuarioController.deleteUsuario);
 api.post('/usuarioAuth/', UsuarioController.authUsuario);
+api.get('/usuarioValida/:email', UsuarioController.getUsuarioValida);
+api.get('/apartamentoValida/:apartamento&:piso', UsuarioController.getApartamentoValida);
 
 module.exports = api;
