@@ -3,6 +3,8 @@
 const { generate } = require('rxjs');
 var Usuario = require('../models/usuario'); 
 const jwt = require('jsonwebtoken');
+const { encrypt, compare } = require('../helpers/handleBcrypt');
+const { enviarMail } = require('../helpers/nodeMailer');
 require('dotenv').config();
 
 function getUsuarioValida(req, res){      
@@ -69,9 +71,35 @@ function getUsuario(req, res){
      });
 }
 
-function saveUsuario(req, res){ 
 
-//validaToken(req, res);
+
+const saveUsuario =  async (req, res) => {
+
+  var usuario = new Usuario(); 
+  var params = req.body;
+  
+  usuario.nombre = params.nombre,
+  usuario.correo = params.correo,
+  usuario.piso = params.piso,
+  usuario.apartamento = params.apartamento,
+  usuario.estatus = params.estatus,
+  usuario.tipo = params.tipo,  
+  usuario.password = await  encrypt(params.password)
+  
+  usuario.save((err, usuarioStored) => {
+            if (err){
+                res.status(500).send({message: 'Error al guardar el marcador'});
+            }else{
+                res.status(200).send({usuarioGuardado: usuarioStored});
+                enviarMail(process.env.SUJETOREGISTER,
+                           process.env.TEXTREGISTER + process.env.SERVERAPP+usuarioStored._id,
+                           usuarioStored.correo);
+            }
+  });
+
+}
+
+function saveUsuario_OLD(req, res){ 
 
 var usuario = new Usuario(); 
 var params = req.body;
@@ -82,6 +110,7 @@ usuario.piso = params.piso,
 usuario.apartamento = params.apartamento,
 usuario.estatus = params.estatus,
 usuario.tipo = params.tipo,
+console.log("PASSWORD " +  encrypt("12345678"))
 usuario.password = params.password
 
 usuario.save((err, usuarioStored) => {
@@ -142,7 +171,7 @@ function deleteUsuario(req, res){
 
 function updateUsuario(req, res){ 
 
-  validaToken(req, res);
+  //validaToken(req, res);
 
 	var usuarioId = req.params.id;
     var update = req.body;

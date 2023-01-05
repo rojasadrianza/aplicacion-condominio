@@ -1,0 +1,22 @@
+<ng-template #content let-modal>
+
+   <!--Mensaje de confirmacion-->
+   <div >
+       <div  class="modal-header">
+           <h5 class="modal-title">Información Importante!</h5>
+           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="modal.dismiss();">
+               <span aria-hidden="true"></span>
+           </button>
+       </div>
+       <div class="modal-body">
+           <p>Usuario Activado Satisfactoriamente!</p>
+       </div>
+       <div class="modal-footer">              
+           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="modal.dismiss();">Close</button>
+       </div>
+   </div>  
+
+</ng-template>
+
+
+
