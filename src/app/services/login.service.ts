@@ -1,19 +1,23 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '@environment/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
 
-  /*constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-  getNoticias(parametros:any): Observable<any>{
+  loginUsuario(parametros:any): Observable<any>{
+    
+    const body = { username: parametros.correo, password: parametros.password};
+    //console.log('PASSWORD----------------------->'+parametros.password);
+    const url = environment.uri+'/api/usuarioAuth';
 
-    const url = 'https://newsapi.org/v2/top-headlines?country='+parametros.pais+'&category='+parametros.categoria+'&apiKey=cdba51fde0214044af32cfc306522db7';
-    return this.http.get(url);
+    return this.http.post(url,body)  
 
-  }*/
+  }
 
 }

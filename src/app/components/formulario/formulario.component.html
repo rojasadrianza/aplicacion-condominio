@@ -1,12 +1,17 @@
-  <form>
-
-
+<form [formGroup]="registerForm" (ngSubmit)="loginUsuario()"  class="" >  
 
     
   <div class="mb-3 row">
     <label for="exampleFormControlInput1" class="col-sm-2 col-form-label">Email</label>
     <div class="col-sm-10">
-      <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+      <input type="email" class="form-control" name="validationInputEmail" [(ngModel)]="correoIngresado"   formControlName="email"  autocomplete="off">
+        <div class="errors-container" *ngIf="emailControl.invalid && (emailControl.touched || emailControl.dirty)" >
+          <p class="error-msg" *ngIf="emailControl.hasError('required')">El campo es obligatorio</p>
+          <p class="error-msg" *ngIf="emailControl.hasError('email')">El campo debe ser un email valido</p>
+        </div>
+        <!--<div>
+          <p class="text-danger" *ngIf="existe" > La dirección de correo ingresada ya se encuentra registrada</p>
+        </div>-->
     </div>    
   </div>
   
@@ -14,7 +19,16 @@
   <div class="mb-3 row">
     <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
     <div class="col-sm-10">
-      <input type="password" class="form-control" id="inputPassword">
+      <input type="password" class="form-control" name="validationInputPassword" [(ngModel)]="passwordIngresado" formControlName="password" maxlength="15">
+      <div class="errors-container" *ngIf="passwordControl.invalid && (passwordControl.touched || passwordControl.dirty)" >
+        <p class="text-danger" *ngIf="passwordControl.hasError('required')">El campo es obligatorio</p>  
+        <!--<p class="text-danger" *ngIf="passwordControl.hasError('pattern')">El valor debe tener de 6 a 15 de largo, numeros y letras</p>   -->     
+      </div>
     </div>
   </div>
+
+  <div class="col-12">
+    <button [disabled]="registerForm.invalid" class="btn btn-primary" type="submit">Ingresar</button>
+  </div>
+
 </form>

@@ -188,7 +188,7 @@ function updateUsuario(req, res){
      });	
 	}
 
-  function authUsuario(req, res){  
+  /*function authUsuario(req, res){  
     
     const {username, password} = req.body;
     const query = { correo: username, password: password };
@@ -210,8 +210,35 @@ function updateUsuario(req, res){
 
                 }
           }
-     });
+     });*/
+
+     const authUsuario =  async (req, res) => {      
     
+        const {username, password} = req.body;
+
+        const user = await Usuario.findOne({ correo: username });
+
+        if (!user) {
+          res.status(404);
+          res.send({error: 'Usuario No Existe'});
+        }else{
+          const checkPassword = compare(password,user.password);
+          if (checkPassword){
+
+            const user = { username };
+            const accessToken = generateAccessToken(user);
+            res.header('authorization',accessToken).json({
+              message: 'Usuario Autenticado',
+              token: accessToken
+            }) 
+
+          }else{
+            res.status(404).send({message: 'Password Incorrecto'});
+          }  
+        }
+
+        
+           
 }
 
 //Funcion para generar el token
