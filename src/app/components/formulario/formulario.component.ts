@@ -2,7 +2,9 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { LoginService } from '@services/login.service';
 import { CookieService } from 'ngx-cookie-service';
-
+import { Router } from '@angular/router';
+import { environment } from '@environment/environment';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-formulario',
@@ -10,6 +12,11 @@ import { CookieService } from 'ngx-cookie-service';
   styleUrls: ['./formulario.component.css']
 })
 export class FormularioComponent implements OnInit {
+
+ 
+  //variable creada para cerrar el modal padre que contiene este formulario
+  @Output()
+  close = new EventEmitter<String>();
 
   token='';
   registerForm = new FormGroup({
@@ -24,46 +31,40 @@ export class FormularioComponent implements OnInit {
     return this.registerForm.get('password') as FormControl;
   }
 
-  constructor(private loginService: LoginService, private cookieService: CookieService) { }
+  constructor(private loginService: LoginService, private cookieService: CookieService, public router: Router) { }
   
   correoIngresado='';
   passwordIngresado='';
   //@Output() parametros = new EventEmitter<any>();
 
   ngOnInit(): void {
+    
   }
 
-  /*loginUsuario(){
-
-    const PARAMETROS = {      
-      correo:this.correoIngresado,      
-      password:this.passwordIngresado
-    }
-      
-    this.loginService.loginUsuario(PARAMETROS).subscribe(result=>
-    {
-      this.token =  result.token; 
-      console.log('token ' + this.token);
-    })
-    
-  }*/
-
-
+  
   loginUsuario(){
     const PARAMETROS = {      
       correo:this.correoIngresado,      
       password:this.passwordIngresado
     }
-    //this.parametros.emit(PARAMETROS);
-    //console.log('PARAMETROS ' + this.parametros);
-    this.send(PARAMETROS);
+    this.close.emit("true"); //estoy pasando true pero no se usa en el padre ese valor, solo llama a la funcion de cerrar modal  
+    this.send(PARAMETROS);    
   }
 
   send(parametros:any): any{    
     this.loginService.loginUsuario(parametros).subscribe({
       next: (response) => {
-        this.cookieService.set('token', response.token);
-        console.log('COOKIE ' + this.cookieService.getAll );       
+        //console.log('LOGIN-->'+response.tipo);
+        const tipo = response.tipo;
+        const dateNow = new Date();
+        dateNow.setMinutes(dateNow.getMinutes() + Number(environment.cookieTine));
+        this.cookieService.set('token', response.token,dateNow);  
+        if (tipo == 2 ) {
+           this.router.navigateByUrl('/user'); 
+        }else if (tipo == 1) {
+           this.router.navigateByUrl('/admin');        
+        }            
+              
       }, 
       error: () =>{
         console.log('Usuario invalido')   

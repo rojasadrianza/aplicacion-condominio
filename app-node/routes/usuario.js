@@ -5,7 +5,8 @@ var UsuarioController  = require('../controllers/usuario');
 var express = require('express');
 var api = express.Router();
 
-api.get('/usuario/:id', UsuarioController.getUsuario);
+//api.get('/usuario/:id', UsuarioController.getUsuario);
+api.get('/usuario', UsuarioController.getUsuario); //el id lo tomo el token
 api.get('/usuarios', UsuarioController.getUsuarios);
 api.post('/usuario/', UsuarioController.saveUsuario);
 api.put('/usuario/:id', UsuarioController.updateUsuario);

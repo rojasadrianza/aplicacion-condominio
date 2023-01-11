@@ -5,6 +5,7 @@ var Usuario = require('../models/usuario');
 const jwt = require('jsonwebtoken');
 const { encrypt, compare } = require('../helpers/handleBcrypt');
 const { enviarMail } = require('../helpers/nodeMailer');
+const { json } = require('body-parser');
 require('dotenv').config();
 
 function getUsuarioValida(req, res){      
@@ -53,22 +54,28 @@ function getApartamentoValida(req, res){
 }
 
 
-
-function getUsuario(req, res){      
- 
-     validaToken(req, res);
-
-     Usuario.find({}).sort('_id').exec((err, registros) => {	
-         if (err){
-                res.status(500).send({message: 'Error al devolver el marcador'});
+const getUsuario =  async (req, res) => {  
+       
+       const { authorization } = req.headers;  
+       if (!authorization) return res.status(401).send({message: 'Error authorization null'}); 
+       try {     
+         const jwtData   = await jwt.verify(authorization,process.env.SECRET);        
+         const query = { _id: jwtData.userId };
+         Usuario.findOne(query).exec((err, usuarios) => { 
+          if (err){
+            res.status(500).send({message: 'Error al ejecutar la consulta'});
           }else{
-              if (!registros){
-                res.status(404).send({message: 'No hay registros'});
-              }else{
-                res.status(200).send({registros});
-              }
+                if (!usuarios){
+                    res.status(404).send({message: 'Usuario no existe'});
+                }else{
+                  res.status(200).send({usuarios});  
+                }        
           }
-     });
+        });
+
+       }catch(err){   
+         return res.status(401).send({message: 'Authorization No Valido'});
+       }
 }
 
 
@@ -125,7 +132,7 @@ usuario.save((err, usuarioStored) => {
 
 function deleteUsuario(req, res){ 
 
-  validaToken(req, res);
+  //validaToken(req, res);
 
 	var usuarioId = req.params.id;
 
@@ -152,21 +159,49 @@ function deleteUsuario(req, res){
     });
 	}
 
-  function getUsuarios(req, res){ 
-    
-    validaToken(req, res);
+  
+ 
+  const getUsuarios =  async (req, res) => {
+     
+      //Validacion token
+      const { authorization } = req.headers;  
+      if (!authorization) return res.status(401).send({message: 'Error authorization null'}); 
+      try {     
+        const jwtData   = await jwt.verify(authorization,process.env.SECRET);
+        console.log(jwtData.userId);
+        return res.status(200).send({message: 'Authorization Valido '});   
+      }catch(err){   
+        return res.status(401).send({message: 'Authorization No Valido'});
+      }
+      
 
-    Usuario.find({}).sort('_id').exec((err, usuarios) => {	
-        if (err){
-               res.status(500).send({message: 'Error al devolver el marcador'});
-         }else{
-             if (!usuarios){
-               res.status(404).send({message: 'No hay favoritos'});
-             }else{
-               res.status(200).send({usuarios});
-             }
-         }
-    });
+      /*if (validacion==401) {
+        return res.status(401).send({message: 'Authorization No Valido' + validacion});
+      }else{
+        
+        return res.status(200).send({message: 'Authorization Valido ' + validacion });
+      }*/
+      
+      //if (validacion==200) return res.status(200).send({message: 'Authorization Valido'}); //para pruebas
+      
+
+      //Fin validacion token
+
+  
+  
+        /*Usuario.find({}).sort('_id').exec((err, usuarios) => {	
+            if (err){
+                  res.status(500).send({message: 'Error al devolver el marcador'});
+            }else{
+                if (!usuarios){
+                  res.status(404).send({message: 'No hay favoritos'});
+                }else{
+                  res.status(200).send({usuarios: usuarios});
+                }
+            }
+        });*/
+            
+      
 }
 
 function updateUsuario(req, res){ 
@@ -188,48 +223,31 @@ function updateUsuario(req, res){
      });	
 	}
 
-  /*function authUsuario(req, res){  
-    
-    const {username, password} = req.body;
-    const query = { correo: username, password: password };
-    const usuario = Usuario.findOne(query).exec((err, usuarios) => { 
-          if (err){
-            res.status(500).send({message: 'Error al devolver el marcador'});
-          }else{
-                if (!usuarios){
-                    res.status(404).send({message: 'No hay Usuario'});
-                }else{
-                    //res.status(200).send({usuarios});
-                    const user = {username: username};
-                    const accessToken = generateAccessToken(user);
-
-                    res.header('authorization',accessToken).json({
-                      message: 'Usuario Autenticado',
-                      token: accessToken
-                    }) 
-
-                }
-          }
-     });*/
+  
 
      const authUsuario =  async (req, res) => {      
     
         const {username, password} = req.body;
 
-        const user = await Usuario.findOne({ correo: username });
+        const user  = await Usuario.findOne({ correo: username });
 
-        if (!user) {
-          res.status(404);
-          res.send({error: 'Usuario No Existe'});
+        if (!user || user.estatus==0) { //Se validad que el usuario alla validado su correo 
+          res.status(404);              //para que tenga el estatus 1 "ACTIVO"
+          res.send({error: 'Usuario No Existe o El correo no ha sido validado'});
         }else{
-          const checkPassword = compare(password,user.password);
+          const checkPassword = await compare(password,user.password);
+      
           if (checkPassword){
 
-            const user = { username };
-            const accessToken = generateAccessToken(user);
+            const userId = user._id;  
+            const tipo = user.tipo; //2 - usuario / 1 - administrador
+            const accessToken = generateAccessToken({userId});         
+
             res.header('authorization',accessToken).json({
               message: 'Usuario Autenticado',
-              token: accessToken
+              token: accessToken,
+              user: userId,
+              tipo: tipo 
             }) 
 
           }else{
@@ -242,29 +260,20 @@ function updateUsuario(req, res){
 }
 
 //Funcion para generar el token
-function generateAccessToken(user){
+function generateAccessToken(user){   
   return jwt.sign(user,process.env.SECRET, {expiresIn: process.env.MINUTE});
-
 }
 
-//Funcion que valida el token ya generado previamente y se encuentra en el valor 'Authorization' del header
-//antes de realizar alguna operacion
-function validaToken(req, res, next){
-  //Usando ***req.query.accessToken***, le enviamos por URL el valor del token generado**********************************
-  //Usando ***req.headers['authorization']***, se toma el valod de parametro AUTHORIZATION del header  
 
-  //const accessToken = req.headers['authorization'] || req.query.accessToken;
-  const accessToken = req.query.accessToken;
-
-  if (!accessToken) res.send('Acceso Denegado');
-  jwt.verify(accessToken, process.env.SECRET,(err, user) =>{
-    if (err){
-        res.send('Acceso denegado token expiro o es incorrecto');        
-    }
-    return;
-  });
-
-}
+//**************ESTA FUNCION SE INTEGRO COMO PRIMERA INSTRUCCION EN CADA UNO DE LOS REQUEST */
+  /*const validaToken =  async (authorization) => {
+  try {     
+    const jwtData  = await jwt.verify(authorization,process.env.SECRET);   
+  }catch(err){   
+   return 401;
+  }
+   return;
+}*/
 
 
 

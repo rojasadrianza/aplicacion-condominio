@@ -4,7 +4,8 @@ import {
   HttpHandler,
   HttpEvent,
   HttpInterceptor,
-  HttpErrorResponse
+  HttpErrorResponse,
+  HttpHeaders
 } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { Router } from '@angular/router';
@@ -16,15 +17,19 @@ export class JwtInterceptorInterceptor implements HttpInterceptor {
   constructor(private router: Router, private cookieService: CookieService) {}
 
   
-  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
     const token:string = this.cookieService.get('token');
     let req = request;
     if (token) {
       //Agregamos el token al header
-      request = request.clone({ headers: request.headers.set('Authorization', 'Bearer ' + token) });
-    }
+      //console.log('PASO POR EL INTERCEPTOR-----------------------------------');      
 
+    const headers = new HttpHeaders({
+      'Authorization': token
+    });
+    request = request.clone({headers});
+    }
 
     return next.handle(request).pipe(
       catchError((err: HttpErrorResponse) => {
