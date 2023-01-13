@@ -22,10 +22,13 @@ export class RegistroService {
 
   updateStatusUsuario(parametros:any): Observable<any>{
     
-    const body = {estatus: parametros.estatus};
-    const url = environment.uri+'/api/usuario/'+parametros.id;
-
-    return this.http.put(url,body)  
+    
+      const body = {estatus: parametros.estatus};
+      const url = environment.uri+'/api/usuarioValida/'+parametros.id;
+      return this.http.put(url,body)
+    
+    
+     
 
   }
 

@@ -98,8 +98,11 @@ const saveUsuario =  async (req, res) => {
                 res.status(500).send({message: 'Error al guardar el marcador'});
             }else{
                 res.status(200).send({usuarioGuardado: usuarioStored});
+                const userId = usuarioStored._id;     
+                
                 enviarMail(process.env.SUJETOREGISTER,
-                           process.env.TEXTREGISTER + process.env.SERVERAPP+usuarioStored._id,
+                           //process.env.TEXTREGISTER + process.env.SERVERAPP+usuarioStored._id,
+                           process.env.TEXTREGISTER + process.env.SERVERAPP+ generateAccessToken({userId}),
                            usuarioStored.correo);
             }
   });
@@ -172,43 +175,48 @@ function deleteUsuario(req, res){
         return res.status(200).send({message: 'Authorization Valido '});   
       }catch(err){   
         return res.status(401).send({message: 'Authorization No Valido'});
-      }
-      
-
-      /*if (validacion==401) {
-        return res.status(401).send({message: 'Authorization No Valido' + validacion});
-      }else{
-        
-        return res.status(200).send({message: 'Authorization Valido ' + validacion });
-      }*/
-      
-      //if (validacion==200) return res.status(200).send({message: 'Authorization Valido'}); //para pruebas
-      
-
-      //Fin validacion token
-
-  
-  
-        /*Usuario.find({}).sort('_id').exec((err, usuarios) => {	
-            if (err){
-                  res.status(500).send({message: 'Error al devolver el marcador'});
-            }else{
-                if (!usuarios){
-                  res.status(404).send({message: 'No hay favoritos'});
-                }else{
-                  res.status(200).send({usuarios: usuarios});
-                }
-            }
-        });*/
-            
+      }     
       
 }
+
+
+const updatetUsuarioValida =  async (req, res) => {  
+       
+  const authorization  = req.params.id; 
+  console.log("authorization " + authorization);
+
+  if (!authorization) return res.status(401).send({message: 'Error authorization null'}); 
+  try {     
+    const jwtData   = await jwt.verify(authorization,process.env.SECRET);        
+    const usuarioId = { _id: jwtData.userId  };
+    var update = req.body;
+    //console.log("usuarioId " + usuarioId);
+    //console.log("tipo " + update);
+    Usuario.findByIdAndUpdate(usuarioId, update, (err, usuarioUpdate) => {
+      if(err){
+        res.status(401).send({message: 'Error al actualizar el marcador'});
+      }else{
+        res.status(200).send({usuario: usuarioUpdate});
+      }
+      
+    });
+
+  }catch(err){   
+    return res.status(401).send({message: 'Authorization No Valido'});
+  }
+}
+
+
+
+
+
+
 
 function updateUsuario(req, res){ 
 
   //validaToken(req, res);
 
-	var usuarioId = req.params.id;
+	  var usuarioId = req.params.id;
     var update = req.body;
  
     console.log(update);
@@ -285,5 +293,6 @@ module.exports = {
 	deleteUsuario,
   authUsuario,
   getUsuarioValida,
-  getApartamentoValida
+  getApartamentoValida,
+  updatetUsuarioValida
 };

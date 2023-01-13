@@ -1,4 +1,4 @@
-<form [formGroup]="registerForm" (ngSubmit)="loginUsuario()"  class="" >  
+<form [formGroup]="registerForm" (ngSubmit)="buscarEmail()"  class="" >  
 
     
   <div class="mb-3 row">
@@ -6,8 +6,8 @@
     <div class="col-sm-10">
       <input type="email" class="form-control" name="validationInputEmail" [(ngModel)]="correoIngresado"   formControlName="email"  autocomplete="off">
         <div class="errors-container" *ngIf="emailControl.invalid && (emailControl.touched || emailControl.dirty)" >
-          <p class="error-msg" *ngIf="emailControl.hasError('required')">El campo es obligatorio</p>
-          <p class="error-msg" *ngIf="emailControl.hasError('email')">El campo debe ser un email valido</p>
+          <p class="text-danger" *ngIf="emailControl.hasError('required')">El campo es obligatorio</p>
+          <p class="text-danger" *ngIf="emailControl.hasError('email')">El campo debe ser un email valido</p>
         </div>
         <!--<div>
           <p class="text-danger" *ngIf="existe" > La dirección de correo ingresada ya se encuentra registrada</p>
@@ -21,10 +21,15 @@
     <div class="col-sm-10">
       <input type="password" class="form-control" name="validationInputPassword" [(ngModel)]="passwordIngresado" formControlName="password" maxlength="15">
       <div class="errors-container" *ngIf="passwordControl.invalid && (passwordControl.touched || passwordControl.dirty)" >
-        <p class="text-danger" *ngIf="passwordControl.hasError('required')">El campo es obligatorio</p>  
-        <!--<p class="text-danger" *ngIf="passwordControl.hasError('pattern')">El valor debe tener de 6 a 15 de largo, numeros y letras</p>   -->     
+        <p class="text-danger" *ngIf="passwordControl.hasError('required')">El campo es obligatorio</p>         
+           
       </div>
     </div>
+  </div>
+
+  <div >
+    <p class="text-danger" *ngIf="existeCorreo==false" > La cuenta de correo ingresada no existe</p>
+    <p class="text-danger" *ngIf="existeUsuario==false" > Los datos ingresados no son correctos</p>      
   </div>
 
   <div class="col-12">

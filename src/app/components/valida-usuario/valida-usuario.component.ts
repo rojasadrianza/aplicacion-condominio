@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RegistroService } from 'src/app/services/registro.service';
 
 @Component({
@@ -10,12 +10,15 @@ import { RegistroService } from 'src/app/services/registro.service';
 })
 export class ValidaUsuarioComponent implements OnInit {
   @ViewChild('content', {static: false}) contenidoDelModal: any;
-  constructor(public modalValida:NgbModal, private rutaActiva: ActivatedRoute, private registroService: RegistroService) { }
+  constructor(public modalValida:NgbModal, private rutaActiva: ActivatedRoute, private registroService: RegistroService, public router: Router) { }
 
-  
+  cerrar(){  
+    this.modalValida.dismissAll('cancel');           
+    this.router.navigateByUrl('');
+  }
 
   ngOnInit(): void {
-    console.log("ID " + this.rutaActiva.snapshot.params['id']);
+    //console.log("ID " + this.rutaActiva.snapshot.params['id']);
 
     const params = {
       estatus: 1,
@@ -33,6 +36,7 @@ export class ValidaUsuarioComponent implements OnInit {
     })
 
 
+    
 
   }
 

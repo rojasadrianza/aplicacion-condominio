@@ -1,0 +1,59 @@
+<ng-template #contenido let-modal >
+    <div class="modal-header">
+        <h4 class="modal-title">Acceder al Sistema:</h4>
+        
+    </div>
+    <div class="modal-body" >        
+        <app-formulario (close)="cerrar($event)"></app-formulario>
+    </div>
+    <div class="modal-footer justify-content: center;" >   
+                <!--<button type="button" class="btn btn-danger" (click)="modalRegistro.open(contenido)">Registrarse</button>-->
+                <button type="button" class="btn btn-danger " (click)="openModal()">Registrarse</button>    
+    </div>
+</ng-template>
+
+<ng-template #registrar let-modal>
+
+    <!--Mensaje de confirmacion-->
+    <div *ngIf="resultado!=''; else Show">
+        
+
+        <div  class="modal-header">
+            <h5 class="modal-title">Información Importante!</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="modal.dismiss();limpiar()">
+                <span aria-hidden="true"></span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p>Usuario Registrado Satisfactoriamente!</p>
+            <p>Por favor revise su correo para terminar el proceso de activacion</p>
+        </div>
+        <div class="modal-footer">              
+            <!--<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="modal.dismiss();limpiar()">Close</button>-->
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="limpiar()">Close</button>
+        </div>
+    </div>
+    <!--Formulario donde se captura la informacion--> 
+    <ng-template #Show>
+        <div class="modal-header">
+            <h4 class="modal-title">Registrarse:</h4>            
+        </div>  
+    
+        <div class="modal-body ">
+            <app-registro (parametros) = 'registroUsuario($event)'></app-registro>    
+        </div>
+        <div class="modal-footer">                
+        </div>
+    </ng-template>     
+      
+
+</ng-template>
+
+
+
+
+   
+    
+
+
+
