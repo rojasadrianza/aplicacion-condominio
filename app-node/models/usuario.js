@@ -13,21 +13,6 @@ var UsuarioSchema = Schema ({
 	password: String
 });
 
-var cuentasClientes = Schema ({
-    piso: Number,
-	apartamento: Number,
-	monto: Number
-});	
-
-var parametros =  Schema ({
-    nombreParametro: String,
-	valorParametro: String
-}); 
-
-var menu = Schema ({
-    nombreOpcion: String,
-	direccionOpcion: String,
-    tipo: Number
-}); 	
+ 	
 
 module.exports = mongoose.model('Usuario', UsuarioSchema);

@@ -9,9 +9,9 @@ const { json } = require('body-parser');
 require('dotenv').config();
 
 function getUsuarioValida(req, res){      
- 
+  
   //validaToken(req, res);
-
+  
   //const {email} = req.body;
   var email = req.params.email;
   const query = { correo: email };

@@ -1,0 +1,47 @@
+
+<div class="content" style=" background-color: rgb(242, 244, 245);">
+    <form>
+        <fieldset>
+          
+          <div class="p-2 form-group">
+            <legend>Cargar Archivo</legend>
+            <label for="formFile" class="form-label mt-4">Nota: solo pueden ser cargados archivos en formato .xlsx con la estructura indicada.</label>
+            
+            <input class="form-control" type="file" (change)="getFile($event)" id="formFile">
+          </div>
+
+          <div class="p-2">
+            <button type="submit"  (click)="submitData()"   class="btn btn-primary">Cargar</button>
+          </div>
+          
+          
+        </fieldset>
+    </form>
+
+    <div class="p-2" *ngIf="estado" class="alert alert-dismissible alert-danger mt-10">
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>  
+      <strong>Felicidades!</strong>  archivo cargado correctamente
+    </div>
+    
+    <div class="p-2 table-wrapper-scroll-y my-custom-scrollbar">
+      <table class="table table-striped table-bordered table-sm p-2">
+        <thead>
+          <tr>      
+            <th scope="col" [appSort]="listadoDeCuentas" data-order="desc" data-name="piso"><a class="nav-link" href="javascript:void(0);">Piso</a></th>
+            <th scope="col" [appSort]="listadoDeCuentas" data-order="desc" data-name="apartamento"><a class="nav-link" href="javascript:void(0);">Apartamento</a></th>
+            <th scope="col" [appSort]="listadoDeCuentas" data-order="desc" data-name="monto"><a class="nav-link" href="javascript:void(0);">Monto</a></th>
+          </tr>
+        </thead>
+        <tbody class="table-group-divider">    
+          <tr *ngFor="let cuenta of listadoDeCuentas" >      
+            <td>{{ cuenta.piso }}</td>
+            <td>{{ cuenta.apartamento }}</td>
+            <td>{{ cuenta.monto }}</td>
+          </tr>
+        </tbody>
+      </table>
+  </div>
+
+
+</div>
+
