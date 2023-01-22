@@ -46,5 +46,7 @@ api.get('/condominio/Cuentas', CondominioController.getCuentas);
 api.post('/condominio/parametros', CondominioController.saveParametro);
 api.get('/condominio/parametros', CondominioController.getParametros);
 api.delete('/condominio/parametro', CondominioController.deleteParametro);
+api.get('/condominio/parametro', CondominioController.getParametro);
+api.put('/condominio/parametro', CondominioController.putParametro);
 
 module.exports = api;

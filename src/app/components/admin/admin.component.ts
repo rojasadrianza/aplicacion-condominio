@@ -11,7 +11,10 @@ export class AdminComponent {
   constructor(private cookieService: CookieService, public router: Router) {}
 
   logout(){
-    this.cookieService.delete('token');            
-    this.router.navigateByUrl(''); 
+    if(confirm("Desea salir del sistema ?")) {
+      this.cookieService.delete('token');            
+      this.router.navigateByUrl('');   
+    }
+    
   }
 }

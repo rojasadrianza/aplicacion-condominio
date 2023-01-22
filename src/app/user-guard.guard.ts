@@ -16,7 +16,7 @@ export class UserGuardGuard implements CanActivate, CanActivateChild, CanDeactiv
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     const cookie = this.cookieService.check('token')
     if(!cookie){
-      this.router.navigate(['/','']);
+      this.router.navigate(['/']);
     } else{
       return true;  
     }
@@ -26,6 +26,14 @@ export class UserGuardGuard implements CanActivate, CanActivateChild, CanDeactiv
   canActivateChild(
     childRoute: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+      const cookie = this.cookieService.check('token')
+      if(!cookie){
+        window.alert('Ohh, la sesion a expirado!, debe ingresar nuevamente al sistema');
+        this.router.navigate(['/']);
+      } else{
+        return true;  
+      }
+      
     return true;
   }
   canDeactivate(

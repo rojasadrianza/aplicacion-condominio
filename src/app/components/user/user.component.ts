@@ -27,17 +27,20 @@ export class UserComponent {
           console.log(response.usuarios)
           this.nombreUsuario = response.usuarios.nombre; 
           //this.usuario = response.usuarios;
-          console.log('NOMBRE USUARIO ' + this.nombreUsuario) 
+          //console.log('NOMBRE USUARIO ' + this.nombreUsuario) 
         }, 
         error: () =>{
-          console.log("Usuario no Existe") 
+         // console.log("Usuario no Existe") 
         }
       })}
 
       logout(){
-        this.cookieService.delete('token'); 
-        this.nombreUsuario='';         
-        this.router.navigateByUrl(''); 
+          //return window.confirm('Do you really want to exit?');
+          
+            this.cookieService.delete('token'); 
+            this.nombreUsuario='';         
+            this.router.navigateByUrl('');    
+          
       }
 
 }

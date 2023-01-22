@@ -35,7 +35,9 @@ export class JwtInterceptorInterceptor implements HttpInterceptor {
       catchError((err: HttpErrorResponse) => {
 
         if (err.status === 401) {
-          this.router.navigateByUrl('/err401');
+          //this.router.navigateByUrl('/err401');
+          //console.log('Ha ocurrido el siguiente error: ' + err.message);
+          this.router.navigateByUrl('/');
         }
 
         return throwError( err );

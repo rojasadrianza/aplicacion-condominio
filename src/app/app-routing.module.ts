@@ -18,7 +18,7 @@ const routes: Routes = [
   { path: 'login', component: FormularioComponent },
   { path: 'valida/:id', component: ValidaUsuarioComponent },
   { path: 'user', component: UserComponent, canActivate: [ UserGuardGuard ] },
-  { path: 'admin', component: AdminComponent, canActivate: [ UserGuardGuard ],
+  { path: 'admin', component: AdminComponent, canActivate: [ UserGuardGuard ],canActivateChild: [ UserGuardGuard ],
 
   children: [
     {
@@ -27,7 +27,7 @@ const routes: Routes = [
     },
     {
       path: 'parametros',
-      component: ParametrosComponent, // another child route component that the router renders
+      component: ParametrosComponent // another child route component that the router renders
     },
   ],}
 ];

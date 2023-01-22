@@ -47,9 +47,20 @@ export class UploadComponent {
     leerFile(){
       const url = environment.uri+'/api/condominio';
       this.http.post(url,'')
-      .subscribe((response) => {           
-        this.consultaCuentas();
-      });
+      /*.subscribe((response) => {           
+          this.consultaCuentas();
+      });*/
+      .subscribe({
+        next: (response) => {
+          this.consultaCuentas();         
+        }, 
+        error: () =>{
+          console.log("Ha ocurrido un error en la carga") 
+        }
+      })
+
+
+
     }
 
 
@@ -60,13 +71,9 @@ export class UploadComponent {
           console.log(response)
 
           this.listadoDeCuentas = response.cuentas;
-          //this.nombreUsuario = response.usuarios.nombre; 
-          //this.usuario = response.usuarios;
-          //console.log('NOMBRE USUARIO ' + this.nombreUsuario) 
-          //console.log('LISTADO ' + this.listadoDeCuentas[0])
         }, 
         error: () =>{
-          //console.log("No hay cuentas registradas") 
+          console.log("Ha ocurrido un error en la consulta") 
         }
       })}
 

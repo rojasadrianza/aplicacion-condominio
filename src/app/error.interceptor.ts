@@ -24,16 +24,30 @@ export class HttpErrorInterceptor implements HttpInterceptor {
             catchError((error: HttpErrorResponse) =>{
                 let errorMessage = '';
                 if (error.error instanceof ErrorEvent){
-                    //Client side erroe
-                    //errorMessage = 'Error:' + error.error.message; 
-                    errorMessage = 'Error: Ha ocurrido un error en la Aplicacion, vuelva a intentarlo ó consulte al administrador'; 
-                    console.log('Error Front' + error.error.message);
-                }else{
-                    //errorMessage = 'Error Code:' + error.status + ' ' + error.message;
-                    errorMessage = 'Error: Ha ocurrido un error en el Servidor,vuelva a intentarlo ó consulte al administrador'; 
-                    console.log('Error Back' +  error.status + ' ' + error.message);
+                    
+                  const cookie = this.cookieService.check('token')
+                  if(!cookie){
+                    window.alert('Ohh, la sesion a expirado!, debe ingresar nuevamente al sistema');
+                    this.router.navigate(['/']);
+                  } else{
+                    errorMessage = 'Error: Ha ocurrido un error en la Aplicacion, el sistema se cerrará'; 
+                    window.alert(errorMessage);
+                    this.router.navigateByUrl('/');
+                  }                   
+                    
+                }else{                                
+
+                  const cookie = this.cookieService.check('token')
+                  if(!cookie){
+                    window.alert('Ohh, la sesion a expirado!, debe ingresar nuevamente al sistema');
+                    this.router.navigate(['/']);
+                  } else{
+                    errorMessage = 'Error: Ha ocurrido un error en el Servidor, el sistema se cerrará'; 
+                    window.alert(errorMessage);
+                    this.router.navigateByUrl('/');
+                  }  
                 }
-                window.alert(errorMessage);
+                
                 return throwError(errorMessage);
 
             })
