@@ -1,6 +1,9 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output,Inject,LOCALE_ID } from '@angular/core';
 import { ParametrosService } from '@services/parametros.service';
 import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators}  from '@angular/forms';
+import { Router } from '@angular/router';
+import { formatDate } from '@angular/common';
+
 
 @Component({
   selector: 'app-parametros',
@@ -9,7 +12,9 @@ import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationEr
 })
 export class ParametrosComponent {
 
-constructor(private parametrosService: ParametrosService) {}
+  
+
+constructor(private parametrosService: ParametrosService,private router: Router,@Inject(LOCALE_ID) public locale: string) {}
 
 registerForm = new FormGroup({
   nombre: new FormControl('',[Validators.required]),
@@ -31,17 +36,80 @@ get fechaControl(): FormControl{
   return this.registerForm.get('fecha') as FormControl;
 } 
 
+
 nombreParametro='';
 valorParametro='';
 nemonicoParametro='';
 fechaParametro='';
+fechaParametroMostrar=false;
+idParametro='';
 estado: any;
 listadoDeParametros: any[] = [];
+parametros: any[] = [];
 
 ngOnInit(): void {
   this.consultaParametros();
 }
+ 
+  
 
+  editar(id:any){
+    
+    this.parametrosService.consultaParametro(id).subscribe({
+      next: (response) => {
+        this.fechaParametroMostrar=false;
+        this.nombreParametro = response.parametro.nombreParametro;
+        this.valorParametro = response.parametro.valorParametro;
+        this.nemonicoParametro = response.parametro.nemonico;
+        this.fechaParametro = formatDate(response.parametro.fecha, 'dd/MM/yyyy' ,this.locale);         
+        this.idParametro = response.parametro._id;
+        
+      }, 
+      error: () =>{        
+      }
+    })
+  }
+
+  actualizar(id:any){
+
+    if(window.confirm('Esta seguro de actualizar el registro?')){
+    
+      const parametros = {
+        nombre:this.nombreParametro,
+        valor:this.valorParametro,
+        nemonico:this.nemonicoParametro,
+        id:id
+      }
+  
+      //console.log('NOMBRE ' + this.nombreParametro);
+      this.parametrosService.actualizarParametro(parametros).subscribe({
+        next: (response) => {            
+          //this.fechaParametro='';  
+          this.fechaParametroMostrar=true;
+          this.registerForm.reset();   
+          this.consultaParametros();        
+        }, 
+        error: () =>{        
+        }
+       })
+
+    }
+
+  }  
+
+
+  eliminar(id:any){
+    
+    if(window.confirm('Esta seguro que desea eliminar el registro?')){
+      this.parametrosService.eliminarParametro(id).subscribe({
+        next: (response) => {
+          this.consultaParametros();        
+        }, 
+        error: () =>{        
+        }
+      })
+    } 
+  }
 
   submitData(){
     const parametros = {
@@ -51,7 +119,7 @@ ngOnInit(): void {
       fecha:this.fechaParametro
     }
      
-      console.log('NOMBRE ' + this.nombreParametro);
+      //console.log('NOMBRE ' + this.nombreParametro);
       this.parametrosService.saveParametro(parametros).subscribe({
         next: (response) => {
           this.estado = true;

@@ -5,33 +5,46 @@
           
           <div class="p-2 form-group">
             <label for="nombre" class="form-label">Nombre Parametro</label>
-            <input type="text" class="form-control" name="nombre"   formControlName="nombre" [(ngModel)]="nombreParametro"   autocomplete="off">
+            <input type="text" [(ngModel)]="nombreParametro" class="form-control" name="nombre"   formControlName="nombre"   autocomplete="off">
             <div class="errors-container" *ngIf="nombreControl.invalid && (nombreControl.touched || nombreControl.dirty)" >
                 <p class="text-danger" *ngIf="nombreControl.hasError('required')">El campo es obligatorio</p>  
             </div>
 
             <label for="valor" class="form-label">Valor Parametro</label>
-            <input type="text" class="form-control" name="valor"   formControlName="valor" [(ngModel)]="valorParametro"   autocomplete="off">
+            <input type="text" class="form-control" name="valor"   formControlName="valor" [(ngModel)]="valorParametro"    autocomplete="off">
             <div class="errors-container" *ngIf="vlorControl.invalid && (vlorControl.touched || vlorControl.dirty)" >
                 <p class="text-danger" *ngIf="vlorControl.hasError('required')">El campo es obligatorio</p>  
             </div>
 
             <label for="nemonico" class="form-label">Nemonico</label>
-            <input type="text" class="form-control" name="nemonico"   formControlName="nemonico" [(ngModel)]="nemonicoParametro"   autocomplete="off">
+            <input type="text" class="form-control" name="nemonico"   formControlName="nemonico"  [(ngModel)]="nemonicoParametro"  autocomplete="off">
             <div class="errors-container" *ngIf="nemonicoControl.invalid && (nemonicoControl.touched || nemonicoControl.dirty)" >
                 <p class="text-danger" *ngIf="nemonicoControl.hasError('required')">El campo es obligatorio</p>  
             </div>
 
-            <label for="fecha" class="form-label">Fecha</label>
-            <input type="date" class="form-control" name="fecha"   formControlName="fecha" [(ngModel)]="fechaParametro" autocomplete="off">
-            <div class="errors-container" *ngIf="fechaControl.invalid && (fechaControl.touched || fechaControl.dirty)" >
-                <p class="text-danger" *ngIf="fechaControl.hasError('required')">El campo es obligatorio</p>  
+            <div *ngIf="fechaParametro=='' || fechaParametroMostrar">
+              <label for="fecha" class="form-label">Fecha</label>
+              <input type="date" class="form-control" name="fecha"   formControlName="fecha" [(ngModel)]="fechaParametro" autocomplete="off">
+              <div class="errors-container" *ngIf="fechaControl.invalid && (fechaControl.touched || fechaControl.dirty)" >
+                  <p class="text-danger" *ngIf="fechaControl.hasError('required')">El campo es obligatorio</p>  
+              </div>
+              
+            </div>
+            <div  *ngIf="fechaParametro">
+              <fieldset disabled="">
+                <label for="fecha" class="form-label">Fecha</label>
+                <input type="text"   class="form-control" name="fecha" formControlName="fecha" [(ngModel)]="fechaParametro" >
+              </fieldset>
             </div>
 
           </div>
 
-          <div class="p-2">
+          <div class="p-2" *ngIf="fechaParametro=='' ">            
             <button [disabled]="registerForm.invalid" type="submit"   class="btn btn-primary">Registrar</button>
+          </div>
+
+          <div class="p-2" *ngIf="fechaParametro">            
+            <button [disabled]="registerForm.invalid" type="button" (click)="actualizar(idParametro)"   class="btn btn-primary">Actualizar</button>
           </div>
           
           
@@ -51,6 +64,8 @@
             <th scope="col" [appSort]="listadoDeParametros" data-order="desc" data-name="valorParametro"><a class="nav-link" href="javascript:void(0);">Valor Parametro</a></th>
             <th scope="col" [appSort]="listadoDeParametros" data-order="desc" data-name="nemonico"><a class="nav-link" href="javascript:void(0);">Nemonico</a></th>
             <th scope="col" [appSort]="listadoDeParametros" data-order="desc" data-name="fecha"><a class="nav-link" href="javascript:void(0);">Fecha</a></th> 
+            <th scope="col">Editar</th>
+            <th scope="col">Eliminar</th>  
           </tr>
         </thead>
         <tbody class="table-group-divider">    
@@ -59,6 +74,13 @@
             <td>{{ parametros.valorParametro }}</td>
             <td>{{ parametros.nemonico }}</td>
             <td>{{ parametros.fecha }}</td>
+            <!--<td>{{ parametros._id }}</td>-->
+            <td><button type="button"  (click)="editar(parametros._id)" class="btn btn-primary">Editar</button></td>
+            <!--<td><a class="nav-link" routerLink="../parametrosEditar/55">Editar</a></td>-->
+            <!--td><a class="nav-link" [routerLink]="['../parametrosEditar/'+parametros._id ]">Editar</a></td>-->
+          
+            
+            <td><button type="button"  (click)="eliminar(parametros._id)" class="btn btn-primary">Eliminar</button></td>
           </tr>
         </tbody>
       </table>

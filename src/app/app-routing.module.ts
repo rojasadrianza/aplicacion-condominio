@@ -29,7 +29,14 @@ const routes: Routes = [
       path: 'parametros',
       component: ParametrosComponent // another child route component that the router renders
     },
+    /*{
+      path: 'parametrosEditar/:id',
+      component: ParametrosComponent // another child route component that the router renders
+    },*/
+
   ],}
+
+  
 ];
 
 @NgModule({
