@@ -95,9 +95,11 @@ export class FormularioComponent implements OnInit,ErrorHandler {
     this.loginService.loginUsuario(parametros).subscribe({
       next: (response) => {        
         const tipo = response.tipo;
+        const uId = response.user;
         const dateNow = new Date();
         dateNow.setMinutes(dateNow.getMinutes() + Number(environment.cookieTine));
-        this.cookieService.set('token', response.token,dateNow);  
+        this.cookieService.set('token', response.token,dateNow);
+        this.cookieService.set('uId', uId,dateNow);   
         this.close.emit("true"); 
         this.existeUsuario=false;
         if (tipo == 2 ) {

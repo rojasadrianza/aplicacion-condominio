@@ -22,7 +22,7 @@
                 <p class="text-danger" *ngIf="nemonicoControl.hasError('required')">El campo es obligatorio</p>  
             </div>
 
-            <div *ngIf="fechaParametro=='' || fechaParametroMostrar">
+            <div *ngIf="idParametro=='' ">
               <label for="fecha" class="form-label">Fecha</label>
               <input type="date" class="form-control" name="fecha"   formControlName="fecha" [(ngModel)]="fechaParametro" autocomplete="off">
               <div class="errors-container" *ngIf="fechaControl.invalid && (fechaControl.touched || fechaControl.dirty)" >
@@ -30,7 +30,7 @@
               </div>
               
             </div>
-            <div  *ngIf="fechaParametro">
+            <div  *ngIf="idParametro">
               <fieldset disabled="">
                 <label for="fecha" class="form-label">Fecha</label>
                 <input type="text"   class="form-control" name="fecha" formControlName="fecha" [(ngModel)]="fechaParametro" >
@@ -39,11 +39,11 @@
 
           </div>
 
-          <div class="p-2" *ngIf="fechaParametro=='' ">            
+          <div class="p-2" *ngIf="idParametro=='' ">            
             <button [disabled]="registerForm.invalid" type="submit"   class="btn btn-primary">Registrar</button>
           </div>
 
-          <div class="p-2" *ngIf="fechaParametro">            
+          <div class="p-2" *ngIf="idParametro">      <!--REVISAR-->      
             <button [disabled]="registerForm.invalid" type="button" (click)="actualizar(idParametro)"   class="btn btn-primary">Actualizar</button>
           </div>
           
@@ -75,7 +75,7 @@
             <td>{{ parametros.nemonico }}</td>
             <td>{{ parametros.fecha }}</td>
             <!--<td>{{ parametros._id }}</td>-->
-            <td><button type="button"  (click)="editar(parametros._id)" class="btn btn-primary">Editar</button></td>
+            <td><button type="button"  (click)="editar(parametros._id);gotoTop()" class="btn btn-primary">Editar</button></td>
             <!--<td><a class="nav-link" routerLink="../parametrosEditar/55">Editar</a></td>-->
             <!--td><a class="nav-link" [routerLink]="['../parametrosEditar/'+parametros._id ]">Editar</a></td>-->
           

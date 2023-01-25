@@ -4,6 +4,7 @@ import { AdminComponent } from './components/admin/admin.component';
 //import { AppComponent } from './app.component';
 import { FormularioComponent } from './components/formulario/formulario.component';
 import { HomeComponent } from './components/home/home.component';
+import { PagosComponent } from './components/pagos/pagos.component';
 import { ParametrosComponent } from './components/parametros/parametros.component';
 import { UploadComponent } from './components/upload/upload.component';
 //import { ModalRegistroComponent } from './components/modal-registro/modal-registro.component';
@@ -17,7 +18,26 @@ const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: FormularioComponent },
   { path: 'valida/:id', component: ValidaUsuarioComponent },
-  { path: 'user', component: UserComponent, canActivate: [ UserGuardGuard ] },
+  { path: 'user', component: UserComponent, canActivate: [ UserGuardGuard ],canActivateChild: [ UserGuardGuard ],
+  
+  children: [
+    {
+      path: 'pagos', // child route path
+      component: PagosComponent // child route component that the router renders
+    },
+    /*{
+      path: 'parametros',
+      component: ParametrosComponent // another child route component that the router renders
+    },
+    {
+      path: 'parametrosEditar/:id',
+      component: ParametrosComponent // another child route component that the router renders
+    },*/
+
+  ],
+  },
+
+
   { path: 'admin', component: AdminComponent, canActivate: [ UserGuardGuard ],canActivateChild: [ UserGuardGuard ],
 
   children: [

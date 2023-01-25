@@ -38,6 +38,8 @@ export class UserComponent {
           //return window.confirm('Do you really want to exit?');
           
             this.cookieService.delete('token'); 
+            this.cookieService.delete('uId'); 
+            //this.cookieService.deleteAll;
             this.nombreUsuario='';         
             this.router.navigateByUrl('');    
           

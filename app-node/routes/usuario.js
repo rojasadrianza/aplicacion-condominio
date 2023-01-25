@@ -3,6 +3,7 @@
 
 var UsuarioController  = require('../controllers/usuario');
 var CondominioController  = require('../controllers/condominio');
+var Pago  = require('../controllers/pagos');
 var express = require('express');
 var api = express.Router();
 const multer  = require('multer');
@@ -48,5 +49,13 @@ api.get('/condominio/parametros', CondominioController.getParametros);
 api.delete('/condominio/parametro/:id', CondominioController.deleteParametro);
 api.get('/condominio/parametro/:id', CondominioController.getParametro);
 api.put('/condominio/parametro', CondominioController.putParametro);
+
+
+//Manejo Pagos
+api.post('/pagos/registro', Pago.savePago);
+api.get('/pagos/pagos/:id', Pago.getPagos);
+api.get('/pagos/bancos', Pago.getBancos);
+api.get('/pagos/info/:id', Pago.getDatosInfo);
+api.get('/pagos/dolar', Pago.getDolar);
 
 module.exports = api;

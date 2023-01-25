@@ -84,8 +84,8 @@ ngOnInit(): void {
       //console.log('NOMBRE ' + this.nombreParametro);
       this.parametrosService.actualizarParametro(parametros).subscribe({
         next: (response) => {            
-          //this.fechaParametro='';  
-          this.fechaParametroMostrar=true;
+          this.idParametro='';  
+          //this.fechaParametroMostrar=true;
           this.registerForm.reset();   
           this.consultaParametros();        
         }, 
@@ -96,6 +96,14 @@ ngOnInit(): void {
     }
 
   }  
+
+  gotoTop() {
+    window.scroll({ 
+      top: 0, 
+      left: 0, 
+      behavior: 'smooth' 
+    });
+  }
 
 
   eliminar(id:any){
@@ -123,15 +131,15 @@ ngOnInit(): void {
       this.parametrosService.saveParametro(parametros).subscribe({
         next: (response) => {
           this.estado = true;
-          this.consultaParametros();
-          //console.log('Parametro guardado')
+          this.consultaParametros();          
         }, 
         error: () =>{
-          //console.log('Parametro no guardado') 
+          
         }
        })
 
        this.registerForm.reset();
+       this.estado = false;
    }
 
    consultaParametros(){
