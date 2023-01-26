@@ -16,8 +16,7 @@ export class PagosComponent {
 
   registerForm = new FormGroup({
     fecha: new FormControl('',[Validators.required]),
-    monto: new FormControl('',[Validators.required]),
-    //bancos: new FormControl('',[Validators.required]),
+    monto: new FormControl('',[Validators.required]),    
     referencia: new FormControl('',[Validators.required])
   
   },);
@@ -46,6 +45,7 @@ fecha='';
 //info: any[] = [];
 dolar:any;
 total:any;
+listadoDePagos: any[] = [];
 
 
 
@@ -65,6 +65,7 @@ ngOnInit(): void {
   this.consultaParametros();
   this.consultaDatosTablaInfo();
   this.consultaDolar();
+  this.consultaPagos();
 }
 
 onChange(event:any){
@@ -85,7 +86,8 @@ onChange(event:any){
       this.pagosService.savePago(parametros).subscribe({
         next: (response) => {
           this.estado = true;
-          //this.consultaParametros();          
+          this.mostrar();
+          this.consultaPagos();          
         }, 
         error: () =>{
           
@@ -141,6 +143,17 @@ onChange(event:any){
       error: () =>{        
       }
     })}
+
+
+    consultaPagos(){
+      
+      this.pagosService.consultaPagos(this.cookieService.get('uId')).subscribe({
+        next: (response) => {          
+          this.listadoDePagos = response.pagos;        
+        }, 
+        error: () =>{        
+        }
+      })}
     
 
 }

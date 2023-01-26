@@ -58,7 +58,7 @@
             <input type="text" class="form-control" name="banco"   formControlName="banco" [(ngModel)]="bancoPago"    autocomplete="off">-->
             
             
-            <label for="bancoS" class="form-label">Bancos</label>
+            <label for="bancoS" class="form-label">Banco Origen</label>
             <select class="form-select"   name="bancos" (change)="onChange($event)">
                 <option  *ngFor="let bancos of listadoDeBancos" value="{{ bancos.valorParametro }}">{{ bancos.nombreParametro }}</option>                 
             </select>
@@ -78,11 +78,6 @@
           <div class="p-2" >            
             <button [disabled]="registerForm.invalid" type="submit"   class="btn btn-primary">Registrar</button>
           </div>
-        
-
-          <!--<div class="p-2" *ngIf="fechaParametro">            
-            <button [disabled]="registerForm.invalid" type="button" (click)="actualizar(idParametro)"   class="btn btn-primary">Actualizar</button>
-          </div>-->
           
           
         </fieldset>
@@ -91,37 +86,35 @@
 
     <div class="p-2" *ngIf="estado" class="alert alert-dismissible alert-danger mt-10">
       <button type="button" class="btn-close" data-bs-dismiss="alert"></button>  
-      <strong>Felicidades!</strong>  pago cargado correctamente
+      <strong>Importante!</strong> su pago ha sido registrado, de 24 a 48 horas recibirá un correo de confirmación. Gracias!
     </div>
+
+    <div class="h6 p-2" >
+        <strong>Importante!</strong> en la tabla de abajo encontrará los últimos 12 pagos realizados ordenados por fecha de mayor a menor.
+   </div>
     
-    <!--<div class="p-2 table-wrapper-scroll-y my-custom-scrollbar">
+    <div class="p-2 table-wrapper-scroll-y my-custom-scrollbar">
       <table class="table table-striped table-bordered table-sm p-2">
         <thead>
           <tr>    
-            <th scope="col" [appSort]="listadoDeParametros" data-order="desc" data-name="nombreParametro"><a class="nav-link" href="javascript:void(0);">Nombre Parametro</a></th>
-            <th scope="col" [appSort]="listadoDeParametros" data-order="desc" data-name="valorParametro"><a class="nav-link" href="javascript:void(0);">Valor Parametro</a></th>
-            <th scope="col" [appSort]="listadoDeParametros" data-order="desc" data-name="nemonico"><a class="nav-link" href="javascript:void(0);">Nemonico</a></th>
-            <th scope="col" [appSort]="listadoDeParametros" data-order="desc" data-name="fecha"><a class="nav-link" href="javascript:void(0);">Fecha</a></th> 
-            <th scope="col">Editar</th>
-            <th scope="col">Eliminar</th>  
+            <th scope="col" class="text-center" >Fecha</th>
+            <th scope="col" class="text-center" >Referencia</th>
+            <th scope="col" class="text-center" >Monto Bs.</th>
+            <th scope="col" class="text-center" >Estatus</th>            
           </tr>
         </thead>
         <tbody class="table-group-divider">    
-          <tr *ngFor="let parametros of listadoDeParametros" >      
-            <td>{{ parametros.nombreParametro }}</td>
-            <td>{{ parametros.valorParametro }}</td>
-            <td>{{ parametros.nemonico }}</td>
-            <td>{{ parametros.fecha }}</td>
-           
-            <td><button type="button"  (click)="editar(parametros._id)" class="btn btn-primary">Editar</button></td>
-           
-          
+          <tr *ngFor="let pagos of listadoDePagos" >      
+            <td align="center">{{ pagos.fecha }}</td>
+            <td align="center">{{ pagos.referencia }}</td>
+            <td align="right">{{ pagos.monto }}</td>
+            <td *ngIf="pagos.estatus=='PENDIENTE'" class="table-danger text-center">{{ pagos.estatus }}</td>
+            <td *ngIf="pagos.estatus!='PENDIENTE'" class="table-success text-center" >{{ pagos.estatus }}</td>
             
-            <td><button type="button"  (click)="eliminar(parametros._id)" class="btn btn-primary">Eliminar</button></td>
           </tr>
         </tbody>
       </table>
-  </div>-->
+  </div>
 
 
 </div>

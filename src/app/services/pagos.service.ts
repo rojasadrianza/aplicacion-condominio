@@ -21,9 +21,7 @@ export class PagosService {
     const body = { fecha: parametros.fecha, monto: parametros.monto, banco: parametros.banco, referencia: parametros.referencia,idUsuario: parametros.idUsuario,estatus: parametros.estatus};
     const url = environment.uri+'/api/pagos/registro';
     return this.http.post(url,body)
-
   }
-
 
   consultaInfo(id:any): Observable<any>{   
     const url = environment.uri+'/api/pagos/info/'+id;
@@ -32,6 +30,11 @@ export class PagosService {
 
   consultaDolar(): Observable<any>{   
     const url = environment.uri+'/api/pagos/dolar';
+    return this.http.get(url)  
+  }
+
+  consultaPagos(id:any): Observable<any>{   
+    const url = environment.uri+'/api/pagos/pagos/'+id;
     return this.http.get(url)  
   }
 
