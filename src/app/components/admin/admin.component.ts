@@ -9,6 +9,15 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class AdminComponent {
   constructor(private cookieService: CookieService, public router: Router) {}
+   
+  inicio=false;
+  
+
+  ngOnInit(): void {
+
+    
+   
+  }
 
   logout(){
     if(confirm("Desea salir del sistema ?")) {

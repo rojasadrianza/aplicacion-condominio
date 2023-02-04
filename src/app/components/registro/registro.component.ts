@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, NgModule } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators}  from '@angular/forms';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs';
 import { ValidaUsuarioService } from 'src/app/services/valida-usuario.service';
@@ -45,7 +46,7 @@ get apartamentoIngresadoControl(): FormControl{
 }
 
 
-constructor(private validaUsuarioService: ValidaUsuarioService) {}
+constructor(private validaUsuarioService: ValidaUsuarioService,public router: Router) {}
 
 nombreIngresado='';
 correoIngresado='';
@@ -116,7 +117,9 @@ passwordIngresadoConfirmacion='';
     })}
 
 
-
+    return(){      
+      window.location.reload(); 
+    }
 
 }
 
@@ -127,16 +130,4 @@ export const passwordsMustBeEqual: ValidatorFn = (group: AbstractControl): Valid
   return password.value === passwordConfirm.value ? null : {passwordsMustBeEqual: true} 
 };
 
-/*export function checkUsername(validaUsuarioService: ValidaUsuarioService): AsyncValidatorFn {
-  return (control: AbstractControl): Observable<ValidationErrors | null> => {
-    //console.log('isAvailable ' + validaUsuarioService.validaUsuario(control.value).pipe(map((isAvailable) =>isAvailable ? null : {checkUsername:true})));
-      //console.log("VALOR CONTROL-------------------->" + control.value);
-    return validaUsuarioService
-       .validaUsuario(control.value)
-       .pipe(
-          map((isAvailable) =>
-             isAvailable ? null : {checkUsername:true} 
-          )
-        );  
-  };
-}*/
+

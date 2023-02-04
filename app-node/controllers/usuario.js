@@ -5,30 +5,65 @@ var Usuario = require('../models/usuario');
 const jwt = require('jsonwebtoken');
 const { encrypt, compare } = require('../helpers/handleBcrypt');
 const { enviarMail } = require('../helpers/nodeMailer');
+const { enviarMailPassword } = require('../helpers/nodeMailer');
 const { json } = require('body-parser');
 require('dotenv').config();
 
-function getUsuarioValida(req, res){      
-  
-  //validaToken(req, res);
-  
-  //const {email} = req.body;
-  var email = req.params.email;
-  const query = { correo: email };
 
-  Usuario.findOne(query).exec((err, usuarios) => { 
-    if (err){
-      res.status(500).send({message: 'Error al devolver el marcador'});
-    }else{
-          if (!usuarios){
-              res.status(404).send({message: 'No hay Usuario'});
-          }else{
-              res.status(200).send({message: 'Usuario existe'});  
-          }        
-    }
-});
+const getUsuarioValida =  async (req, res) => {         
+  
+  try {     
+    var email = req.params.email;
+    const query = { correo: email };
+  
+    Usuario.findOne(query).exec((err, usuarios) => { 
+      if (err){
+        res.status(500).send({message: 'Error al devolver el marcador'});
+      }else{
+            if (!usuarios){
+                res.status(404).send({message: 'No hay Usuario'});
+            }else{
+                res.status(200).send({message: 'Usuario existe'});  
+            }        
+      }
+    });
 
+  }catch(err){   
+    return res.status(401).send(err);
+  }
 }
+
+const getUsuarioPassword =  async (req, res) => {         
+  
+  try {     
+    var email = req.params.email;
+    const query = { correo: email };
+  
+    Usuario.findOne(query).exec((err, usuarios) => { 
+      if (err){
+        res.status(500).send({message: 'Error al devolver el marcador'});
+      }else{
+            if (!usuarios){
+                res.status(404).send({message: 'No hay Usuario'});
+            }else{
+                res.status(200).send({usuarioGuardado: usuarios}); 
+                const userId = usuarios._id;  
+                //console.log('USUARIO ID ' + userId);
+                
+                enviarMailPassword(process.env.SUJETOPASSWORD,
+                           process.env.SERVERAPPPASSWORD+generateAccessToken({userId}),
+                           usuarios.correo);
+            }        
+      }
+    });
+
+  }catch(err){   
+    return res.status(401).send(err);
+  }
+}
+
+
+
 
 function getApartamentoValida(req, res){      
  
@@ -102,36 +137,15 @@ const saveUsuario =  async (req, res) => {
                 
                 enviarMail(process.env.SUJETOREGISTER,
                            //process.env.TEXTREGISTER + process.env.SERVERAPP+usuarioStored._id,
-                           process.env.TEXTREGISTER + process.env.SERVERAPP+ generateAccessToken({userId}),
+                           //process.env.TEXTREGISTER + process.env.SERVERAPP+ generateAccessToken({userId}),
+                           process.env.SERVERAPP+ generateAccessToken({userId}),
                            usuarioStored.correo);
             }
   });
 
 }
 
-function saveUsuario_OLD(req, res){ 
 
-var usuario = new Usuario(); 
-var params = req.body;
-
-usuario.nombre = params.nombre,
-usuario.correo = params.correo,
-usuario.piso = params.piso,
-usuario.apartamento = params.apartamento,
-usuario.estatus = params.estatus,
-usuario.tipo = params.tipo,
-console.log("PASSWORD " +  encrypt("12345678"))
-usuario.password = params.password
-
-usuario.save((err, usuarioStored) => {
-          if (err){
-              res.status(500).send({message: 'Error al guardar el marcador'});
-          }else{
-              res.status(200).send({usuarioGuardado: usuarioStored});
-          }
-});
-
-}		
 
 function deleteUsuario(req, res){ 
 
@@ -183,16 +197,43 @@ function deleteUsuario(req, res){
 const updatetUsuarioValida =  async (req, res) => {  
        
   const authorization  = req.params.id; 
-  console.log("authorization " + authorization);
-
   if (!authorization) return res.status(401).send({message: 'Error authorization null'}); 
-  try {     
+  try {   
+    const jwtData   = await jwt.verify(authorization,process.env.SECRET);        
+    const usuarioId = { _id: jwtData.userId  };    
+    var update = req.body;  
+    
+    
+    Usuario.findByIdAndUpdate(usuarioId, update, (err, usuarioUpdate) => {
+      if(err){
+        res.status(401).send({message: 'Error al actualizar el marcador'});
+      }else{
+        res.status(200).send({usuario: usuarioUpdate});
+      }
+      
+    });
+
+  }catch(err){   
+    return res.status(401).send({message: 'Authorization No Valido'});
+  }
+}
+
+const updatetUsuarioPassword =  async (req, res) => {  
+       
+  const authorization  = req.params.id; 
+  
+  if (!authorization) return res.status(401).send({message: 'Error authorization null'}); 
+  try {   
     const jwtData   = await jwt.verify(authorization,process.env.SECRET);        
     const usuarioId = { _id: jwtData.userId  };
-    var update = req.body;
-    //console.log("usuarioId " + usuarioId);
-    //console.log("tipo " + update);
-    Usuario.findByIdAndUpdate(usuarioId, update, (err, usuarioUpdate) => {
+
+    /********ESTA FORMA Y COMO SE HACE EN SAVEUSUARIO PARA EXTRAER LA DATA DEL BODY ************* */
+    var update = JSON.stringify(req.body);  //Recibo el objeto JSON y lo convierto a STRING  
+    var updateParse = JSON.parse(update); //Parseo el STRING para extraer el valor que necesito  
+    var encryptar = await  encrypt(updateParse.password); //Estraigo el password del parse y luego lo encripto 
+    var query = {password : encryptar}; //Vuelvo a agregar el password encriptado en formato JSON para actualizarlo    
+    
+    Usuario.findByIdAndUpdate(usuarioId, query, (err, usuarioUpdate) => {
       if(err){
         res.status(401).send({message: 'Error al actualizar el marcador'});
       }else{
@@ -294,5 +335,7 @@ module.exports = {
   authUsuario,
   getUsuarioValida,
   getApartamentoValida,
-  updatetUsuarioValida
+  updatetUsuarioValida,
+  getUsuarioPassword,
+  updatetUsuarioPassword
 };

@@ -27,11 +27,11 @@ export class HttpErrorInterceptor implements HttpInterceptor {
                     
                   const cookie = this.cookieService.check('token')
                   if(!cookie){
-                    window.alert('Ohh, la sesion a expirado!, debe ingresar nuevamente al sistema');
+                    //window.alert('Ohh, la sesion a expirado!, debe ingresar nuevamente al sistema');
                     this.router.navigate(['/']);
                   } else{
-                    errorMessage = 'Error: Ha ocurrido un error en la Aplicacion, el sistema se cerrará'; 
-                    window.alert(errorMessage);
+                    /*errorMessage = 'Error: Ha ocurrido un error en la Aplicacion, el sistema se cerrará'; 
+                    window.alert(errorMessage);*/
                     this.router.navigateByUrl('/');
                   }                   
                     
@@ -39,11 +39,11 @@ export class HttpErrorInterceptor implements HttpInterceptor {
 
                   const cookie = this.cookieService.check('token')
                   if(!cookie){
-                    window.alert('Ohh, la sesion a expirado!, debe ingresar nuevamente al sistema');
+                    //window.alert('Ohh, la sesion a expirado!, debe ingresar nuevamente al sistema');
                     this.router.navigate(['/']);
                   } else{
-                    errorMessage = 'Error: Ha ocurrido un error en el Servidor, el sistema se cerrará'; 
-                    window.alert(errorMessage);
+                    /*errorMessage = 'Error: Ha ocurrido un error en el Servidor, el sistema se cerrará'; 
+                    window.alert(errorMessage);*/
                     this.router.navigateByUrl('/');
                   }  
                 }

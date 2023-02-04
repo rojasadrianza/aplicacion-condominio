@@ -54,6 +54,27 @@
           <option value="1">Uno</option>
           <option value="2">Dos</option>
           <option value="3">Tres</option>
+          <option value="4">Cuatro</option>
+          <option value="5">Cinco</option>
+          <option value="6">Seis</option>
+          <option value="7">Siete</option>
+          <option value="8">Ocho</option>
+          <option value="9">Nueve</option>
+          <option value="10">Diez</option>
+          <option value="11">Once</option>
+          <option value="12">Doce</option>
+          <option value="13">Trece</option>
+          <option value="14">Catorce</option>
+
+
+
+
+
+
+
+
+
+
         </select>
         <div class="errors-container" *ngIf="pisoIngresadoControl.invalid && (pisoIngresadoControl.touched || pisoIngresadoControl.dirty)"   >                
           <p class="text-danger" *ngIf="pisoIngresadoControl.hasError('required')">El campo es obligatorio</p> 
@@ -68,6 +89,18 @@
           <option value="02">02</option>
           <option value="03">03</option>
           <option value="04">04</option>
+          <option value="05">05</option>
+          <option value="06">06</option>
+          <option value="07">07</option>
+          <option value="08">08</option>
+          <option value="09">09</option>
+          <option value="10">10</option>
+          <option value="11">11</option>
+          <option value="12">12</option>
+          <option value="13">13</option>
+          <option value="14">14</option>
+
+
         </select>
         <div class="errors-container" *ngIf="apartamentoIngresadoControl.invalid && (apartamentoIngresadoControl.touched || apartamentoIngresadoControl.dirty)"   >                
           <p class="text-danger" *ngIf="apartamentoIngresadoControl.hasError('required')">El campo es obligatorio</p> 
@@ -78,10 +111,12 @@
       </div>
       
 
-      <div class="col-12">
-        <button [disabled]="registerForm.invalid" class="btn btn-primary" type="submit">Submit form</button>
-      </div>
+     
 
+      <div class="row">
+        <div class="col-3"><button [disabled]="registerForm.invalid" class="btn btn-primary" type="submit">Registrarse</button></div> 
+        <div class="col-3"><button   class="btn btn-danger" type="button" (click)="return()">Cancelar</button> </div>    
+      </div>
 
       
        

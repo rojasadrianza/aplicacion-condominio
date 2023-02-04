@@ -18,6 +18,8 @@ api.post('/usuarioAuth/', UsuarioController.authUsuario);
 api.get('/usuarioValida/:email', UsuarioController.getUsuarioValida);
 api.get('/apartamentoValida/:apartamento&:piso', UsuarioController.getApartamentoValida);
 api.put('/usuarioValida/:id', UsuarioController.updatetUsuarioValida);
+api.put('/usuarioUpdatePassword/:id', UsuarioController.updatetUsuarioPassword);
+api.get('/usuarioPassword/:email', UsuarioController.getUsuarioPassword);
 
 //Manejo datos condominio
 //Carga archivo
@@ -49,6 +51,8 @@ api.get('/condominio/parametros', CondominioController.getParametros);
 api.delete('/condominio/parametro/:id', CondominioController.deleteParametro);
 api.get('/condominio/parametro/:id', CondominioController.getParametro);
 api.put('/condominio/parametro', CondominioController.putParametro);
+api.get('/condominio/pagosClientes', CondominioController.getPagosClientes);
+api.put('/condominio/pago', CondominioController.putPago);
 
 
 //Manejo Pagos

@@ -1,15 +1,59 @@
 <ng-template #contenido let-modal >
-    <div class="modal-header">
-        <h4 class="modal-title">Acceder al Sistema:</h4>
-        
+    <div *ngIf="recuperar=='' && cambiarPass==''; else recuperarPassword">
+        <div class="modal-header" >
+            <h4 class="modal-title">Acceder al Sistema:</h4>
+            
+        </div>
+        <div class="modal-body" >        
+            <app-formulario (close)="cerrar($event)"></app-formulario>
+        </div>
+        <div class="modal-footer justify-content: center;" >   
+                    <!--<button type="button" class="btn btn-danger" (click)="modalRegistro.open(contenido)">Registrarse</button>-->
+                    <button type="button" class="btn btn-danger " (click)="openModal()">Registrarse</button>    
+        </div>
     </div>
-    <div class="modal-body" >        
-        <app-formulario (close)="cerrar($event)"></app-formulario>
-    </div>
-    <div class="modal-footer justify-content: center;" >   
-                <!--<button type="button" class="btn btn-danger" (click)="modalRegistro.open(contenido)">Registrarse</button>-->
-                <button type="button" class="btn btn-danger " (click)="openModal()">Registrarse</button>    
-    </div>
+
+    <ng-template #recuperarPassword>
+
+        <div *ngIf="cambiarPass==''; else cambiarPassword"> 
+            <div class="modal-header">
+                <h4 class="modal-title">Recuperar Password:</h4>
+                
+            </div>
+            <div class="modal-body" >        
+                <app-recuperar-password></app-recuperar-password>
+            </div>
+            <div class="modal-footer justify-content: center;" >   
+                        
+                        <!--<button type="button" class="btn btn-danger " (click)="openModal()">Registrarse</button> -->   
+            </div>
+        </div>
+
+        <ng-template #cambiarPassword>
+            <div class="modal-header">
+                <h4 class="modal-title">Cambiar Password:</h4>
+                
+            </div>
+            <div class="modal-body" >        
+                <app-cambiar-password></app-cambiar-password>                
+            </div>
+            <div class="modal-footer justify-content: center;" >   
+                        
+                        <!--<button type="button" class="btn btn-danger " (click)="openModal()">Registrarse</button> -->   
+            </div>
+        </ng-template>
+
+
+
+
+    </ng-template>
+
+    
+
+
+
+
+
 </ng-template>
 
 <ng-template #registrar let-modal>
@@ -48,6 +92,8 @@
       
 
 </ng-template>
+
+
 
 
 

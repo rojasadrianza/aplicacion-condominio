@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminComponent } from './components/admin/admin.component';
+import { ConsultaPagosComponent } from './components/consulta-pagos/consulta-pagos.component';
 //import { AppComponent } from './app.component';
 import { FormularioComponent } from './components/formulario/formulario.component';
 import { HomeComponent } from './components/home/home.component';
@@ -16,6 +17,8 @@ import { UserGuardGuard } from './user-guard.guard';
 
 const routes: Routes = [  
   { path: '', component: HomeComponent },
+  { path: 'recuperPassword/:recuperar', component: HomeComponent },
+  { path: 'cambiarPassword/:cambiar/:id', component: HomeComponent },
   { path: 'login', component: FormularioComponent },
   { path: 'valida/:id', component: ValidaUsuarioComponent },
   { path: 'user', component: UserComponent, canActivate: [ UserGuardGuard ],canActivateChild: [ UserGuardGuard ],
@@ -42,17 +45,17 @@ const routes: Routes = [
 
   children: [
     {
-      path: 'carga', // child route path
-      component: UploadComponent // child route component that the router renders
+      path: 'carga', 
+      component: UploadComponent 
     },
     {
       path: 'parametros',
-      component: ParametrosComponent // another child route component that the router renders
+      component: ParametrosComponent 
     },
-    /*{
-      path: 'parametrosEditar/:id',
-      component: ParametrosComponent // another child route component that the router renders
-    },*/
+    {
+      path: 'consultaPago',
+      component: ConsultaPagosComponent 
+    },
 
   ],}
 

@@ -14,4 +14,15 @@ export class UsuarioService {
     const url = environment.uri+'/api/usuario';
     return this.http.get(url)  
   }
+
+  recuperarPassword(email:any): Observable<any>{        
+    const url = environment.uri+'/api/usuarioPassword/'+email;
+    return this.http.get(url)  
+  }
+
+
+
+
+
+ 
 }

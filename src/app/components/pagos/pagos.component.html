@@ -109,7 +109,8 @@
             <td align="center">{{ pagos.referencia }}</td>
             <td align="right">{{ pagos.monto }}</td>
             <td *ngIf="pagos.estatus=='PENDIENTE'" class="table-danger text-center">{{ pagos.estatus }}</td>
-            <td *ngIf="pagos.estatus!='PENDIENTE'" class="table-success text-center" >{{ pagos.estatus }}</td>
+            <td *ngIf="pagos.estatus=='APROBADO'" class="table-success text-center" >{{ pagos.estatus }}</td>
+            <td *ngIf="pagos.estatus=='RECHAZADO'" class="table-dark text-center" >{{ pagos.estatus }}</td>
             
           </tr>
         </tbody>

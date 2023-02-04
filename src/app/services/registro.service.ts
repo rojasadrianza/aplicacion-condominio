@@ -20,17 +20,23 @@ export class RegistroService {
 
   }
 
-  updateStatusUsuario(parametros:any): Observable<any>{
-    
-    
+  updateStatusUsuario(parametros:any): Observable<any>{    
+         
       const body = {estatus: parametros.estatus};
       const url = environment.uri+'/api/usuarioValida/'+parametros.id;
-      return this.http.put(url,body)
-    
+      return this.http.put(url,body)  
     
      
-
   }
+
+  updatePasswordUsuario(parametros:any): Observable<any>{    
+         
+    const body = {password: parametros.password};
+    const url = environment.uri+'/api/usuarioUpdatePassword/'+parametros.id;
+    return this.http.put(url,body)  
+  
+   
+}
 
 
 
